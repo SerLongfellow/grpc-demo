@@ -1,0 +1,14 @@
+
+syntax = "proto3";
+
+service EpochConverterService {
+    rpc ConvertDateToEpochSeconds (ConversionRequest) returns (ConversionResponse);
+}
+
+message ConversionRequest {
+    string date_string = 1;
+}
+
+message ConversionResponse {
+    int64 epoch_seconds = 1;
+}
