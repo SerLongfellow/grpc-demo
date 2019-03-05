@@ -20,7 +20,9 @@ class HttpHandler(BaseHTTPRequestHandler):
         return
 
     def do_GET(self):
-        print("Got GET request!")
+        if self.path == "/health":
+            self.respond_to_health_check()
+            return
 
         try:
             ds = parse.parse_qs(parse.urlparse(self.path).query).get("ds", None)
@@ -42,6 +44,11 @@ class HttpHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(bytes("Server error!\n", "UTF-8"))
 
+    def respond_to_health_check(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(bytes("", "UTF-8"))
+
     def handle_http(self):
         return
 
@@ -54,6 +61,7 @@ def main():
     print("Starting server...")
     httpd = HTTPServer(("0.0.0.0", 8080), HttpHandler)
 
+    print("Server up!")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

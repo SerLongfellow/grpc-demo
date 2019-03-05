@@ -7,10 +7,24 @@ import grpc
 
 import epoch_converter_service_pb2
 import epoch_converter_service_pb2_grpc
+import health_check_pb2
+import health_check_pb2_grpc
 
 
 date_format = "%Y-%m-%d %H:%M:%S"
 epoch_time = datetime(1970, 1, 1)
+
+
+class HealthCheckService(health_check_pb2_grpc.HealthServicer):
+    def Check(self,
+              request: health_check_pb2.HealthCheckRequest,
+              context
+              ):
+        print("Received health request!\n" + str(request))
+
+        response = health_check_pb2.HealthCheckResponse(status=health_check_pb2.HealthCheckResponse.SERVING)
+
+        return response
 
 
 class EpochConversionService(epoch_converter_service_pb2_grpc.EpochConverterServiceServicer):
@@ -39,8 +53,9 @@ class EpochConversionService(epoch_converter_service_pb2_grpc.EpochConverterServ
 
 
 def start():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
     epoch_converter_service_pb2_grpc.add_EpochConverterServiceServicer_to_server(EpochConversionService(), server)
+    health_check_pb2_grpc.add_HealthServicer_to_server(HealthCheckService(), server)
     server.add_insecure_port('[::]:5000')
 
     print("Starting server...")
