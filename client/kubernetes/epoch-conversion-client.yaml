@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: epoch-conversion-client
+spec:
+  selector:
+    matchLabels:
+      app: epoch-conversion-client
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: epoch-conversion-client
+    spec:
+      containers:
+      - name: epoch-conversion-client
+        image: epoch-conversion-client
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: epoch-conversion-client-svc
+spec:
+  type: NodePort
+  selector:
+    app: epoch-conversion-client
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080

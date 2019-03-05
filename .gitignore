@@ -1,2 +1,4 @@
-server/proto/lib/*pb2*
+proto/lib/*pb2*
 .idea/
+__pycache__
+*.pyc
