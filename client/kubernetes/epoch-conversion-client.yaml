@@ -30,6 +30,10 @@ spec:
             port: 8080
           initialDelaySeconds: 3
           periodSeconds: 3
+      - name: envoy-proxy
+        image: epoch-conversion-client-envoy-proxy
+        imagePullPolicy: Never
+
 
 ---
 

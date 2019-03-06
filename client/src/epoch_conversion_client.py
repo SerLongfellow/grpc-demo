@@ -9,7 +9,8 @@ import epoch_converter_service_pb2
 import epoch_converter_service_pb2_grpc
 
 grpc_host = os.environ.get("GRPC_HOST", "localhost")
-grpc_channel = grpc.insecure_channel('{}:5000'.format(grpc_host))
+grpc_port = os.environ.get("GRPC_PORT", "5000")
+grpc_channel = grpc.insecure_channel('{}:{}'.format(grpc_host, grpc_port))
 
 
 class HttpHandler(BaseHTTPRequestHandler):
