@@ -26,7 +26,7 @@ static_resources:
           - name: envoy.router
   clusters:
   - name: epoch_conversion_server_grpc
-    connect_timeout: 2s
+    connect_timeout: 1s
     type: STRICT_DNS
     lb_policy: ROUND_ROBIN
     dns_lookup_family: V4_ONLY

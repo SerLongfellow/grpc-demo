@@ -10,7 +10,11 @@ import epoch_converter_service_pb2_grpc
 
 grpc_host = os.environ.get("GRPC_HOST", "localhost")
 grpc_port = os.environ.get("GRPC_PORT", "5000")
+
+grpc_endpoint = '{}:{}'.format(grpc_host, grpc_port)
+print("Using {} as gRPC remote endpoint channel.".format(grpc_endpoint))
 grpc_channel = grpc.insecure_channel('{}:{}'.format(grpc_host, grpc_port))
+
 
 
 class HttpHandler(BaseHTTPRequestHandler):
@@ -27,6 +31,14 @@ class HttpHandler(BaseHTTPRequestHandler):
 
         try:
             ds = parse.parse_qs(parse.urlparse(self.path).query).get("ds", None)
+
+            if ds is None:
+                self.send_response(400)
+                self.send_header("content-type", "application/text")
+                self.end_headers()
+                self.wfile.write(bytes("Bad request! No 'ds' query parameter", "UTF-8"))
+                return
+
             ds = ds[0]
 
             stub = epoch_converter_service_pb2_grpc.EpochConverterServiceStub(grpc_channel)

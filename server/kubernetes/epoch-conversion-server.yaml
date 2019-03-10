@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: epoch-conversion-server
-  replicas: 4
+  replicas: 2
   template:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: epoch-conversion-server
-        image: epoch-conversion-server
+        image: epoch-conversion-server:latest
         imagePullPolicy: Never
         ports:
         - containerPort: 5000
@@ -38,8 +38,8 @@ metadata:
 spec:
   selector:
     app: epoch-conversion-server
-  clusterIP: None
+  type: ClusterIP
   ports:
-  - protocol: TCP
+  - name: grpc
     port: 5000
     targetPort: 5000

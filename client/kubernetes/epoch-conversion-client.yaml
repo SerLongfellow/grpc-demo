@@ -14,8 +14,13 @@ spec:
     spec:
       containers:
       - name: epoch-conversion-client
-        image: epoch-conversion-client
+        image: epoch-conversion-client:latest
         imagePullPolicy: Never
+        env:
+        - name: GRPC_HOST
+          value: epoch-conversion-server-svc
+        - name: GRPC_PORT
+          value: "5000"
         ports:
         - containerPort: 8080
         livenessProbe:
@@ -30,10 +35,6 @@ spec:
             port: 8080
           initialDelaySeconds: 3
           periodSeconds: 3
-      - name: envoy-proxy
-        image: epoch-conversion-client-envoy-proxy
-        imagePullPolicy: Never
-
 
 ---
 
