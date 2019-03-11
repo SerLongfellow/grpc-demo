@@ -1,4 +1,4 @@
 #!/bin/bash
 
-minikube start --memory=16384 --cpus=4
+minikube start --memory=8192 --cpus=4
 
